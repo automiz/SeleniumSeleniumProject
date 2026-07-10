@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Selenium Automation Suite">
-    <test name="Google Search Tests">
+    <test name="Core Banking Operations Tests">
         <classes>
-          
-            <class name="com.automation.GoogleTest"/>
-            <class name="com.automation.BankingTest"/>
-<class name="com.automation.BankingApiTest"/>
+            <class name="com.automation.tests.BankingTest"/>
+            <class name="com.automation.tests.BankingApiTest"/>
         </classes>
     </test>
 </suite>
