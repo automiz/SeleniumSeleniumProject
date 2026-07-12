@@ -3,199 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selenium Enterprise Banking Framework CLI Guide</title>
+    <title>Selenium Enterprise Banking Framework Architecture Guide</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 40px auto; padding: 20px; }
         h1 { color: #1f4e79; border-bottom: 2px solid #1f4e79; padding-bottom: 10px; font-size: 2em; }
         h2 { color: #2e75b6; margin-top: 30px; border-left: 4px solid #1f4e79; padding-left: 10px; }
+        h3 { color: #1f4e79; margin-top: 20px; font-size: 1.1em; }
         code { background-color: #f4f4f4; color: #d63384; padding: 2px 6px; font-family: 'Courier New', Courier, monospace; font-size: 0.9em; border-radius: 3px; }
         pre { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; margin: 15px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .cmd-line { color: #00ff00; font-weight: bold; }
         .note { background-color: #e7f3fe; border-left: 6px solid #2196F3; padding: 12px; margin: 20px 0; border-radius: 4px; }
         table { width: 100%; border-collapse: collapse; margin: 20px 0; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        th { background-color: #f2f2f2; color: #1f4e79; }
     </style>
 </head>
 <body>
 
     <h1>Selenium & REST Assured Enterprise Framework Blueprint</h1>
-    <p>This master document serves as the end-to-end configuration history and design document for a hybrid UI/API test automation architecture optimized for enterprise core banking application simulations (such as Finacle and T24 workflows). Built entirely via the Windows Command Line Interface (CLI).</p>
+    <p>This master document serves as the end-to-end design layout, compilation workflow, and CLI execution guide for a hybrid UI/API test automation architecture optimized for enterprise core banking simulations. Built entirely with clean architectural patterns and command-line execution mapping.</p>
 
-    <h2>1. Environment Diagnostics</h2>
-    <p>Verification of core Java runtime compilation environments and Apache Maven dependency routers before setting up the project:</p>
-    <pre><span class="cmd-line">C:\Users\Astami&gt;</span> java -version
-<span class="cmd-line">C:\Users\Astami&gt;</span> mvn -version</pre>
+    <h2>1. Framework Directory Layout & Structural Upgrades</h2>
+    <p>The application code, testing suites, utilities, and configuration profiles are completely isolated under the test resource trees to maintain a professional, production-ready framework state:</p>
+    <pre>
+SeleniumSeleniumProject/
+├── src/
+│   ├── main/java/                  
+│   │   └── com/automation/
+│   │       ├── pages/               <-- Page Object Factory Models
+│   │       └── utils/               <-- Apache POI Excel Reader Utility (ExcelReader)
+│   │
+│   └── test/java/                  
+│       └── com/automation/
+│           ├── tests/               <-- Central Session Engine (BaseTest) & Test Cases (BankingTest)
+│           └── listeners/           <-- Global Test Execution Observers (TestListener)
+├── TestData.xlsx                    <-- External Data Spreadsheet Source File
+├── testng.xml                       <-- Core XML Test Execution Suite Map
+└── pom.xml                          <-- Central Maven Project Object Model Map</pre>
 
-    <h2>2. Directory Initialization & Structure Generation</h2>
-    <p>Navigating to the active desktop workspace directory and generating a lightweight structured Maven architecture:</p>
-    <pre><span class="cmd-line">C:\Users\Astami&gt;</span> cd Desktop
-<span class="cmd-line">C:\Users\Astami\Desktop&gt;</span> mvn archetype:generate -DgroupId=com.automation -DartifactId=SeleniumSeleniumProject -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</pre>
+    <h2>2. Maven Project Settings & Dependency Architecture</h2>
+    <p>The framework relies on standard Maven compilation rules. The core build dependencies added to the <code>pom.xml</code> profile are optimized for testing both visual banking interfaces and background ledgers:</p>
+    <ul>
+        <li><strong>TestNG Engine:</strong> Drives the core testing execution flow, manages test annotations, and coordinates data pipeline setups.</li>
+        <li><strong>Selenium Java Core:</strong> Provides standard browser controls, explicit synchronizations, and web page interactions.</li>
+        <li><strong>REST Assured Core:</strong> Built to parse, send, and validate backend API banking transactions.</li>
+        <li><strong>Apache POI (XSSF Models):</strong> Handles high-speed, direct memory access to open and read modern <code>.xlsx</code> data sheets.</li>
+        <li><strong>Maven Surefire Plugin:</strong> Binds the Maven runtime test goals directly to execution suite configuration files.</li>
+    </ul>
 
-    <h2>3. Dependency Configuration (pom.xml)</h2>
-    <p>Accessing and editing the Maven build blueprint to add TestNG, Selenium core, REST Assured (for API testing), and Java Faker (for mock banking identities):</p>
-    <pre><span class="cmd-line">C:\Users\Astami\Desktop&gt;</span> cd SeleniumSeleniumProject
-<span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> notepad pom.xml</pre>
+    <h2>3. Automated Data-Driven Strategy (Excel Layer)</h2>
+    <p>To eliminate hardcoded constants from scripts, test parameters are completely separated into an external spreadsheet (<span style="font-style: italic;">./TestData.xlsx</span>) under a specific data tab named <code>Onboarding</code>.</p>
     
-    <p>The complete enterprise configuration of the <code>pom.xml</code> file:</p>
-    <pre>&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
-  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
-  &lt;groupId&gt;com.automation&lt;/groupId&gt;
-  &lt;artifactId&gt;SeleniumSeleniumProject&lt;/artifactId&gt;
-  &lt;packaging&gt;jar&lt;/packaging&gt;
-  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-  &lt;name&gt;SeleniumSeleniumProject&lt;/name&gt;
-  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    <h3>A. The Data Extraction Utility</h3>
+    <p>The framework utilizes a dedicated extraction class that reads rows dynamically through the following structural process:</p>
+    <ul>
+        <li>Opens a secure data pipeline to the file location using a Java <code>FileInputStream</code>.</li>
+        <li>Loads the entire workbook structure into an <code>XSSFWorkbook</code> tracker.</li>
+        <li>Navigates to the targeted data sheet tab using an <code>XSSFSheet</code> pointer.</li>
+        <li>Calculates the precise horizontal and vertical boundaries of the test matrix using the row and cell calculation methods.</li>
+        <li>Converts the cells into simple, clean text strings using a <code>DataFormatter</code> utility to prevent formatting errors.</li>
+        <li>Implements automated safety guards to check if an active row is empty, allowing the engine to gracefully skip empty rows instead of throwing a runtime error.</li>
+    </ul>
 
-  &lt;dependencies&gt;
-    &lt;!-- TestNG Core Architecture --&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.testng&lt;/groupId&gt;
-        &lt;artifactId&gt;testng&lt;/artifactId&gt;
-        &lt;version&gt;7.10.2&lt;/version&gt; 
-        &lt;scope&gt;test&lt;/scope&gt;
-    &lt;/dependency&gt;
+    <h3>B. The Test Pipeline Injection</h3>
+    <p>The data grid is packaged into a standard 2D Object grid array. A TestNG <code>@DataProvider</code> intercepts this grid and sequentially passes the values into the <code>@Test</code> methods as matching functional parameters, running the tests automatically for every data row.</p>
 
-    &lt;!-- Selenium Components --&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-        &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-        &lt;version&gt;4.21.0&lt;/version&gt; 
-    &lt;/dependency&gt;
+    <h2>4. Test Isolation Design (Inheritance & Base Controllers)</h2>
+    <p>To follow clean coding practices, browser controls are split into two layers:</p>
+    <ul>
+        <li><strong>The Parent Controller (BaseTest):</strong> Holds the centralized setup and teardown rules. It manages browser instances, window sizes, and safely shuts down active session windows after a test runs.</li>
+        <li><strong>The Test Case Suite (BankingTest):</strong> Inherits session variables from the parent class. It contains only the actual banking workflow logic, test verifications, and assertions.</li>
+    </ul>
 
-    &lt;!-- REST Assured Core Engine for Core Banking Backend Tests --&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
-        &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;
-        &lt;version&gt;5.5.0&lt;/version&gt;
-        &lt;scope&gt;test&lt;/scope&gt;
-    &lt;/dependency&gt;
+    <h2>5. Real-Time Interception Layer (TestNG Listeners)</h2>
+    <p>A central test observer class implements the core <code>ITestListener</code> interface. It runs silently in the background of the execution suite to monitor testing states in real time:</p>
+    <ul>
+        <li><strong>Suite/Test Start:</strong> Intercepts execution initialization to generate clean console logs.</li>
+        <li><strong>Failure Interception:</strong> The exact millisecond a validation checkpoint fails, the engine intercepts the active class driver instance, triggers a visual screenshot capture, formats it with a timestamp, and saves it inside an isolated folder path before the browser closes.</li>
+    </ul>
 
-    &lt;!-- Java Faker Framework for Dynamic Customer Personas --&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;com.github.javafaker&lt;/groupId&gt;
-        &lt;artifactId&gt;javafaker&lt;/artifactId&gt;
-        &lt;version&gt;1.0.2&lt;/version&gt;
-    &lt;/dependency&gt;
-  &lt;/dependencies&gt;
+    <h2>6. Execution & Deployment Run Operations</h2>
+    <p>Continuous execution maps are triggered directly from the terminal interface to build execution files, clean caches, run tests, and open visual reporting sheets:</p>
+    <pre><span class="cmd-line">C:\Users\Astami\git\SeleniumSeleniumProject&gt;</span> mvn clean test
+<span class="cmd-line">C:\Users\Astami\git\SeleniumSeleniumProject&gt;</span> start target/surefire-reports/emailable-report.html</pre>
 
-  &lt;build&gt;
-    &lt;plugins&gt;
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-        &lt;version&gt;3.2.5&lt;/version&gt;
-        &lt;configuration&gt;
-          &lt;suiteXmlFiles&gt;
-            &lt;suiteXmlFile&gt;testng.xml&lt;/suiteXmlFile&gt;
-          &lt;/suiteXmlFiles&gt;
-        &lt;/configuration&gt;
-      &lt;/plugin&gt;
-    &lt;/plugins&gt;
-  &lt;/build&gt;
-&lt;/project&gt;</pre>
+    <h2>7. Version Control & Continuous Integration Steps</h2>
+    <p>To deploy changes to cloud code pipelines, local changes are committed to the code branch, pushed to GitHub, and compiled inside the orchestration controller:</p>
+    <pre><span class="cmd-line">C:\Users\Astami\git\SeleniumSeleniumProject&gt;</span> git add .
+<span class="cmd-line">C:\Users\Astami\git\SeleniumSeleniumProject&gt;</span> git commit -m "Framework Architecture Upgrade"
+<span class="cmd-line">C:\Users\Astami\git\SeleniumSeleniumProject&gt;</span> git push origin main</pre>
 
-    <h2>4. Core Banking UI Automation & Test Case Assembly</h2>
-    <p>Creating target folder paths for tests and generating a script to handle real-world scenarios using explicit waits and unique test data generation:</p>
-    <pre><span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> mkdir src\test\java\com\automation
-<span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> notepad src\test\java\com\automation\BankingTest.java</pre>
-
-    <p>The updated implementation of <code>BankingTest.java</code> targeting the ParaBank core platform simulation:</p>
-    <pre>package com.automation;
-
-import com.github.javafaker.Faker;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.time.Duration;
-
-public class BankingTest {
-    WebDriver driver;
-    WebDriverWait wait;
-    Faker faker;
-
-    @BeforeMethod
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        
-        // Explicit Wait configuration (Crucial for heavy Finacle/T24 architectures)
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        faker = new Faker();
-    }
-
-    @Test
-    public void testCustomerOnboardingScenario() {
-        // Navigating to ParaBank's registration module
-        driver.get("https://parabank.parasoft.com/parabank/register.htm");
-
-        // Dynamically generating data on the fly (Simulates unique customer creation)
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String ssn = faker.idNumber().ssnValid();
-
-        // Waiting explicitly for the form field to be interactable before taking action
-        WebElement firstNameField = wait.until(
-            ExpectedConditions.elementToBeClickable(By.id("customer.firstName"))
-        );
-        
-        // Execute interactions
-        firstNameField.sendKeys(firstName);
-        driver.findElement(By.id("customer.lastName")).sendKeys(lastName);
-        driver.findElement(By.id("customer.ssn")).sendKeys(ssn);
-
-        System.out.println("Generated Dynamic Core Banking Test Data:");
-        System.out.println("First Name: " + firstName + " | Last Name: " + lastName + " | SSN: " + ssn);
-
-        // Verification checkpoint
-        Assert.assertNotNull(firstName);
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
-}</pre>
-
-    <h2>5. Suite Execution Map (testng.xml)</h2>
-    <p>Creating and registering active execution components inside the central TestNG suite file:</p>
-    <pre><span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> notepad testng.xml</pre>
-    <p>The code blueprint configured inside <code>testng.xml</code>:</p>
-    <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd"&gt;
-&lt;suite name="Selenium Automation Suite"&gt;
-    &lt;test name="Core Banking Operations Tests"&gt;
-        &lt;classes&gt;
-            &lt;class name="com.automation.BankingTest"/&gt;
-        &lt;/classes&gt;
-    &lt;/test&gt;
-&lt;/suite&gt;</pre>
-
-    <h2>6. Framework Execution and Reporting Metrics</h2>
-    <p>Compiling the hybrid dependencies, building isolated test classes, and opening visual HTML execution dashboards:</p>
-    <pre><span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> mvn clean test
-<span class="cmd-line">C:\Users\Astami\Desktop\SeleniumSeleniumProject&gt;</span> start target/surefire-reports/emailable-report.html</pre>
+    <p>To initialize the local background pipeline dashboard engine via the download workspace directory:</p>
+    <pre><span class="cmd-line">C:\Users\Astami\Downloads&gt;</span> java -jar jenkins.war</pre>
 
     <div class="note">
-        <strong>Core Pipeline Framework Architecture Summary:</strong>
-        <table>
-            <tr><th>Component Controlled</th><th>Terminal Interface Tool</th><th>Role in Framework</th></tr>
-            <tr><td>Dependencies</td><td><code>pom.xml</code> via Notepad</td><td>Imports Selenium, TestNG, REST Assured, and Faker libraries</td></tr>
-            <tr><td>Test Data Generation</td><td>Java Faker Engine</td><td>Abstracts static parameters out of banking registration routines</td></tr>
-            <tr><td>Sync Controllers</td><td><code>WebDriverWait</code> Handles</td><td>Prevents test synchronization failures on slow core networks</td></tr>
-            <tr><td>Execution/Reporting</td><td><code>mvn test</code> / Surefire Reports</td><td>Compiles test execution statistics and charts passes/failures</td></tr>
-        </table>
+        <strong>Pipeline Management Note:</strong> Keep the command-line interface running during test orchestration. Once initial setup logs complete, go to the active port mapping profile via your browser at <code>http://localhost:8080</code> and use the console secret pass key string to unlock the management console.
     </div>
 
 </body>

@@ -3,29 +3,32 @@ package com.automation.tests;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import com.automation.pages.RegistrationPage;
 import com.automation.utils.ExcelReader;
+import com.automation.utils.ConfigReader;
+import com.automation.pages.RegistrationPage; // 👈 Don't forget to import the page page!
 
 public class BankingTest extends BaseTest {
 
-    // 1. Hook the DataProvider straight into the Excel file
-    @DataProvider(name = "excelOnboardingData")
+    @DataProvider(name = "excelOnboardingData", parallel = true) 
     public Object[][] getExcelData() {
-        String path = "./TestData.xlsx"; 
-        return ExcelReader.getSheetData(path, "Onboarding");
+        String path = ConfigReader.getProperty("excelPath");
+        String sheet = ConfigReader.getProperty("excelSheet");
+        return ExcelReader.getSheetData(path, sheet);
     }
 
-    // 2. Feed the Excel matrix dynamically down into your Page Factory steps
     @Test(dataProvider = "excelOnboardingData")
     public void testCustomerOnboardingScenario(String fName, String lName, String ssn) {
-        driver.get("https://parabank.parasoft.com/parabank/register.htm");
+        // 1. Fetch the URL configuration map dynamically
+        String targetUrl = ConfigReader.getProperty("appUrl");
+        getActiveDriver().get(targetUrl);
 
-        RegistrationPage registrationPage = new RegistrationPage(driver);
-        registrationPage.enterFirstName(fName);
-        registrationPage.enterLastName(lName);
-        registrationPage.enterSsn(ssn);
+        // 2. Initialize the Page Factory object with the active thread driver
+        RegistrationPage registrationPage = new RegistrationPage(getActiveDriver());
 
-        System.out.println("📊 Excel Row Processed -> Name: " + fName + " " + lName);
+        // 3. Execute the single optimized action block
+        registrationPage.registerCustomer(fName, lName, ssn);
+
+        System.out.println("📊 Thread ID [" + Thread.currentThread().threadId() + "] Processed -> " + fName);
         Assert.assertNotNull(fName);
     }
 }

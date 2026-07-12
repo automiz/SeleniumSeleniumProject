@@ -1,72 +1,58 @@
 package com.automation.listeners;
 
+import com.automation.report.ExtentManager;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TestListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        System.out.println("🎬 [SUITE START] Starting execution for suite: " + context.getName());
+        ExtentManager.initReport();
     }
 
     @Override
     public void onTestStart(ITestResult result) {
-        System.out.println("🚀 [TEST STARTING] Running method: " + result.getName());
+        // Create an isolated reporting node for the thread running this row of data
+        ExtentTest test = ExtentManager.initReport().createTest(
+            result.getMethod().getMethodName() + " [" + result.getParameters()[0] + "]"
+        );
+        ExtentManager.setTest(test);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-        System.out.println("✅ [PASS] " + result.getName() + " completed successfully!");
+        ExtentManager.getTest().pass("Test executed successfully.");
+        ExtentManager.unloadTest();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-        System.out.println("❌ [FAIL] " + result.getName() + " failed!");
-        
-        // 1. Get the current test instance to fetch its active WebDriver instance
+        ExtentManager.getTest().fail(result.getThrowable());
         Object currentClass = result.getInstance();
-        WebDriver driver = null;
         
-        try {
-            // We read the 'driver' field dynamically from your running test class instance
-            java.lang.reflect.Field field = currentClass.getClass().getDeclaredField("driver");
-            field.setAccessible(true);
-            driver = (WebDriver) field.get(currentClass);
-        } catch (Exception e) {
-            System.out.println("⚠️ Could not access WebDriver instance to capture screenshot: " + e.getMessage());
-        }
-
-        // 2. Take the screenshot if driver is online
-        if (driver != null) {
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String screenshotName = result.getName() + "_" + timestamp + ".png";
-            
-            // Create target folder if it doesn't exist
-            try {
-                Files.createDirectories(Paths.get("./screenshots"));
-                File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-                File destFile = new File("./screenshots/" + screenshotName);
-                Files.copy(srcFile.toPath(), destFile.toPath());
-                System.out.println("📸 [SCREENSHOT SAVED] Destination: ./screenshots/" + screenshotName);
-            } catch (IOException e) {
-                System.out.println("💥 Failed to save screenshot: " + e.getMessage());
+        if (currentClass instanceof DriverProvider) {
+            WebDriver driver = ((DriverProvider) currentClass).getActiveDriver();
+            if (driver != null) {
+                // Take base64 screenshot directly to cleanly embed it inline within the HTML file
+                String base64String = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+                ExtentManager.getTest().fail("Snapshot attached on failure:", 
+                    MediaEntityBuilder.createScreenCaptureFromBase64String(base64String).build());
             }
         }
+        ExtentManager.unloadTest();
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        System.out.println("🏁 [SUITE FINISHED] Finished execution for suite: " + context.getName());
+        if (ExtentManager.initReport() != null) {
+            ExtentManager.initReport().flush(); // Writes out the HTML report file to disk
+        }
     }
 }

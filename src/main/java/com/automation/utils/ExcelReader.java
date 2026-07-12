@@ -25,10 +25,17 @@ public class ExcelReader {
 
             for (int i = 1; i < rowCount; i++) {
                 XSSFRow row = sheet.getRow(i);
+                
+                // 🛡️ Guard 1: Skip entirely if the row object itself is null
+                if (row == null) {
+                    continue; 
+                }
+                
                 for (int j = 0; j < colCount; j++) {
                     XSSFCell cell = row.getCell(j);
-                    // Formats cell values cleanly into standard Strings automatically
-                    data[i - 1][j] = formatter.formatCellValue(cell);
+                    
+                    // 🛡️ Guard 2: Handle individual blank cells safely to prevent NullPointerExceptions
+                    data[i - 1][j] = (cell == null) ? "" : formatter.formatCellValue(cell);
                 }
             }
         } catch (IOException e) {
